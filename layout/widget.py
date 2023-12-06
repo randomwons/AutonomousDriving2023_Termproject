@@ -1,11 +1,17 @@
 import open3d as o3d
+import open3d.visualization.gui as gui
 import open3d.visualization.rendering as rendering
-from material import Material
+from shader.material import Material
 import numpy as np
 
-class Geometry:
-    def __init__(self, widget3d):
-        self.widget3d = widget3d
+
+class Widget(gui.SceneWidget):
+    def __init__(self, window):
+        super().__init__()
+        self.scene = rendering.Open3DScene(window.renderer)
+        self.scene.set_background([1, 1, 1, 1])
+        window.add_child(self)
+        self.draw_primitives()
         
     def draw_car(self, name, pose, length, width, height):
         
@@ -22,9 +28,8 @@ class Geometry:
             [0, 4], [1, 5], [2, 6], [3, 7]
         ])
         car.paint_uniform_color([1.0, 0.0, 0.0])
-        self.widget3d.scene.add_geometry(name, car, Material.default)
-        self.widget3d.scene.set_geometry_transform(name, pose)
-    
+        self.scene.add_geometry(name, car, Material.default)
+        self.scene.set_geometry_transform(name, pose)
     
     def draw_spline(self, name, a, b, c, color=[1.0, 0.0, 0.0], min=-30, max=30):
         
@@ -38,23 +43,21 @@ class Geometry:
             [i, i+1] for i in range(0, max-min-1)
         ])
         spline.paint_uniform_color(color)
-        self.widget3d.scene.add_geometry(name, spline, Material.default)
-    
+        self.scene.add_geometry(name, spline, Material.default)
     
     def draw_primitives(self):
 
         self.draw_car("my_car", np.eye(4), 3.6, 1.8, 1.7)
         
-        self.widget3d.scene.show_axes(True)
-        self.widget3d.scene.show_ground_plane(True, rendering.Scene.GroundPlane.XY)
-        bounds = self.widget3d.scene.bounding_box 
-        self.widget3d.scene.camera.look_at([0, 0, 0], [-40, 0, 50], [0, 0, 1])
+        self.scene.show_axes(True)
+        self.scene.show_ground_plane(True, rendering.Scene.GroundPlane.XY)
+        self.scene.camera.look_at([0, 0, 0], [-40, 0, 50], [0, 0, 1])
             
     def update_geometry(self, name, geometry, show=True, mat=Material.default):
         self.remove_geometry(name)
         if show:
-            self.widget3d.scene.add_geometry(name, geometry, mat)
+            self.scene.add_geometry(name, geometry, mat)
     
     def remove_geometry(self, name):
-        if self.widget3d.scene.has_geometry(name):
-            self.widget3d.scene.remove_geometry(name)
+        if self.scene.has_geometry(name):
+            self.scene.remove_geometry(name)

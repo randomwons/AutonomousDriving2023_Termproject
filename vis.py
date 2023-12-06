@@ -6,17 +6,15 @@ import open3d.visualization.rendering as rendering
 import threading
 from scipy import io
 import time
-from geometry import Geometry
 from dataset import Dataset
 from sklearn.cluster import KMeans
-import hdbscan
-import matplotlib.pyplot as plt
-from utils import create_button, create_label
 from event import Event
+from layout.panel import Panel
+from layout.widget import Widget
 
 class Vis:
     def __init__(self):
-        pass
+        self.event = Event(self)
     
     def run(self):
         app = gui.Application.instance
@@ -28,44 +26,27 @@ class Vis:
         ### Panel
         vspacing = 4
         margins = gui.Margins(10, 10, 10, 10)
-        self.panel = gui.Vert(vspacing, margins)
-        self.input_color_image = gui.ImageWidget()
-        self.panel.add_child(self.input_color_image)
-        
-        # buttons
-        self.btn_show_axes = create_button("Show axes", (0.1, 1.5), True, None, self.panel)
-        
-        # labels
-        self.label_voxel_size = create_label("Voxel Size : ", self.panel)
-        self.label_distance = create_label("Distance : ", self.panel)
-        self.label_ground = create_label("Ground : ", self.panel)
+        self.panel = Panel(self.event, vspacing, margins, self.window)
 
-        self.window.add_child(self.panel)
-        
         ### Widget
-        self.widget = gui.SceneWidget()
-        self.widget.scene = rendering.Open3DScene(self.window.renderer)
-        self.widget.scene.set_background([0, 0, 0, 0])
-        self.geometry = Geometry(self.widget)
-        self.geometry.draw_primitives()
-        self.window.add_child(self.widget)
-        
-        ### Window event
-        self.event = Event(self)
+        self.widget = Widget(self.window)
+
+        ### on event
         self.window.set_on_layout(self.layout)
         self.window.set_on_close(self.close)
         self.window.set_on_key(self.event.on_key)
-
         ### Thread context
-        time.sleep(1)
-        threading.Thread(target=self.context, daemon=True).start()
+        # time.sleep(1)
+        # threading.Thread(target=self.context, daemon=True).start()
         app.run()
     
     def layout(self, ctx):
+        print("???")
         rect = self.window.content_rect
         self.panel.frame = gui.Rect(rect.x, rect.y, rect.width // 4, rect.height)        
         x = self.panel.frame.get_right()
         self.widget.frame = gui.Rect(x, rect.y, rect.get_right() - x, rect.height)
+        print("?")
     
     def close(self):
         self.event.loop_stop = True

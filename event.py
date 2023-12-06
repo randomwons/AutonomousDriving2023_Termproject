@@ -3,7 +3,6 @@ import open3d.visualization.rendering as rendering
 class Event:
     def __init__(self, vis):
         self.vis = vis
-        self.widget = vis.widget
         
         ## Window process
         self.loop_stop = False
@@ -34,17 +33,17 @@ class Event:
                 self.show_ground = not self.show_ground
             
             if keyevent.key == ord('w'):
-                print(self.widget.scene.camera.get_model_matrix())
+                print(self.vis.widget.scene.camera.get_model_matrix())
     
             if keyevent.key == ord('a'):
-                self.widget.scene.camera.set_projection(60, 1.5, 0, 1000, rendering.Camera.FovType.Horizontal)
-                self.widget.scene.camera.look_at([2.3, 0, 1.2], [2.2, 0, 1.2], [0, 0, 1])
+                self.vis.widget.scene.camera.set_projection(60, 1.5, 0, 1000, rendering.Camera.FovType.Horizontal)
+                self.vis.widget.scene.camera.look_at([2.3, 0, 1.2], [2.2, 0, 1.2], [0, 0, 1])
     
             if keyevent.key == ord('e'):
-                self.widget.scene.camera.look_at([0, 0, 0], [-40, 0, 50], [0, 0, 1])
+                self.vis.widget.scene.camera.look_at([0, 0, 0], [-40, 0, 50], [0, 0, 1])
     
             if keyevent.key == ord('t'):
-                self.widget.scene.camera.look_at([0, 0, 0], [0, 0, 70], [0, 0, 1])
+                self.vis.widget.scene.camera.look_at([0, 0, 0], [0, 0, 70], [0, 0, 1])
     
             if keyevent.key == ord('d'):
                 self.down = not self.down
