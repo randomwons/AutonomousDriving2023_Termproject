@@ -9,7 +9,7 @@ class Widget(gui.SceneWidget):
     def __init__(self, window):
         super().__init__()
         self.scene = rendering.Open3DScene(window.renderer)
-        self.scene.set_background([1, 1, 1, 1])
+        self.scene.set_background([0, 0, 0, 0])
         window.add_child(self)
         self.draw_primitives()
         
@@ -31,13 +31,12 @@ class Widget(gui.SceneWidget):
         self.scene.add_geometry(name, car, Material.default)
         self.scene.set_geometry_transform(name, pose)
     
-    def draw_spline(self, name, a, b, c, color=[1.0, 0.0, 0.0], min=-30, max=30):
-        
+    def draw_spline(self, name, poly, color=[1.0, 0.0, 0.0], min=-30, max=30):
         self.remove_geometry(name)
         
         spline = o3d.geometry.LineSet()
         spline.points = o3d.utility.Vector3dVector([
-            [i, a*i*i + b * i + c, 0] for i in range(min, max, 1)
+            [i, poly[0]*i*i + poly[1] * i + poly[2], 0] for i in range(min, max, 1)
         ])
         spline.lines = o3d.utility.Vector2iVector([
             [i, i+1] for i in range(0, max-min-1)
