@@ -27,8 +27,8 @@ class Dataset:
         datas["points"] = np.vstack([x, y, z]).T
         
         datas["yawrate"] = self.datas["YAW_RATE_stack"][0][self.cur]
-        datas["ax_rate"] = self.datas["Ax_stack"][0][self.cur]
-        datas["ay_rate"] = self.datas["Ay_stack"][0][self.cur]
+        datas["ax"] = self.datas["Ax_stack"][0][self.cur]
+        datas["ay"] = self.datas["Ay_stack"][0][self.cur]
         datas["sas_angle"] = self.datas["SAS_Angle_stack"][0][self.cur]
         datas["vx"] = self.datas["Vx_stack"][0][self.cur]
         
