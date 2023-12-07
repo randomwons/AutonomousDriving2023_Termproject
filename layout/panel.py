@@ -38,6 +38,7 @@ class Panel(gui.Vert):
         self.ground_threshold = create_label("Ground threshold (C, V) : ", parameter_layout)
         self.voxel_size = create_label("Voxel Size (Z, X) : ", parameter_layout)
         self.dbscan_eps = create_label("DBSCAN EPS (A, S) : ", parameter_layout)
+        self.dbscan_min_points = create_label("DBSCAN min points (D, F) : ", parameter_layout)
         self.add_child(parameter_layout)
     
     def update_image(self, image):
@@ -57,5 +58,5 @@ class Panel(gui.Vert):
         self.ground_threshold.text = f"Ground threshold (C, V) : {self.event.ground:.2f}"
         self.voxel_size.text = f"Voxel Size (Z, X) : {self.event.voxel_size:.2f}"
         self.dbscan_eps.text = f"DBSCAN EPS (A, S) : {self.event.eps:.2f}"
-        
+        self.dbscan_min_points.text = f"DBSCAN min points (D, F) : {self.event.min_points}"
         

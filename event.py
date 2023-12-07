@@ -11,16 +11,13 @@ class Event:
         ## data wait
         self.wait = False
         
-        ## Visualize
-        self.show_ground = False
-        self.show_inlier = True
-        self.show_outlier = False
-        self.test = False
-        
         ## Values
-        self.eps = 0.5
-        self.voxel_size = 0.05
         self.ground = 0.27
+        self.voxel_size = 0.25
+        self.eps = 1.0
+        self.min_points = 7
+        self.icp_threshold = 1.0
+        self.icp_distance = 0.01
         
     def on_key(self, keyevent):
         
@@ -49,40 +46,34 @@ class Event:
             if keyevent.key == ord('s'):
                 self.eps += 0.05
             
+            ### DBSCAN min points setting
+            if keyevent.key == ord('d'):
+                self.min_points = max(1, self.min_points - 1)
+                
+            if keyevent.key == ord('f'):
+                self.min_points += 1
+            
+            ### ICP threshold setting
+            if keyevent.key == ord('b'):
+                self.icp_distance = max(0.1, self.icp_distance - 0.1)
+            
+            if keyevent.key == ord('n'):
+                self.icp_distance += 0.1
+                
+            ### ICP distance setting
+            if keyevent.key == ord('g'):
+                self.icp_distance = max(0.01, self.icp_distance - 0.1)
+            
+            if keyevent.key == ord('h'):
+                self.icp_threshold += 0.01
+            
             
             if keyevent.key == 32: # space
                 self.wait = not self.wait
-                
-            # if keyevent.key == ord('x'):
-            #     self.show_ground = not self.show_ground
             
-    
-            # if keyevent.key == ord('a'):
-                # self.vis.widget.scene.camera.set_projection(60, 1.5, 0, 1000, rendering.Camera.FovType.Horizontal)
-                # self.vis.widget.scene.camera.look_at([2.3, 0, 1.2], [2.2, 0, 1.2], [0, 0, 1])
-    
-            if keyevent.key == ord('e'):
-                self.vis.widget.scene.camera.look_at([0, 0, 0], [-40, 0, 50], [0, 0, 1])
-    
             if keyevent.key == ord('t'):
-                self.vis.widget.scene.camera.look_at([0, 0, 0], [0, 0, 70], [0, 0, 1])
-    
-            if keyevent.key == ord('d'):
-                self.down = not self.down
-            
-            if keyevent.key == ord('o'):
-                self.show_outlier = not self.show_outlier
-            
-            if keyevent.key == ord('r'):
-                self.test = not self.test            
-    
-            
-    
-    
-            if keyevent.key == ord('i'):
-                self.show_inlier = not self.show_inlier
-            
-        
+                self.vis.widget.scene.camera.set_projection(60, 1.5, 0, 1000, rendering.Camera.FovType.Horizontal)
+                self.vis.widget.scene.camera.look_at([2.3, 0, 1.2], [2.2, 0, 1.2], [0, 0, 1])
         
         
         

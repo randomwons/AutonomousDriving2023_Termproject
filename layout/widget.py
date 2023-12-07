@@ -49,8 +49,8 @@ class Widget(gui.SceneWidget):
         self.draw_car("my_car", np.eye(4), 3.6, 1.8, 1.7)
         
         self.scene.show_axes(True)
-        self.scene.show_ground_plane(True, rendering.Scene.GroundPlane.XY)
-        self.scene.camera.look_at([0, 0, 0], [-40, 0, 50], [0, 0, 1])
+        # self.scene.show_ground_plane(True, rendering.Scene.GroundPlane.XY)
+        self.scene.camera.look_at([0, 0, 0], [0, 0, 20], [0, 0, 1])
             
     def update_geometry(self, name, geometry, show=True, mat=Material.default):
         self.remove_geometry(name)
